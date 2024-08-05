@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
+import { ISuccessResult, IDKitWidget } from '@worldcoin/idkit';
 import axios from 'axios';
+import styles from '../styles/homepage.module.css';
 
 const HomePage = () => {
-  const [worldIDProof, setWorldIDProof] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const appId = process.env.NEXT_PUBLIC_APP_ID || '';
+  const actionId = process.env.NEXT_PUBLIC_ACTION_ID || '';
 
-  const handleSignUp = async () => {
+  const handleProofSuccess = async (proof: ISuccessResult) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      //  actual World ID SDK 
-      const proof = await getWorldIDProof();
-      setWorldIDProof(proof);
+      const res = await axios.post('/api/verify', {
+        proof: proof,
+      });
 
-      
-      const response = await axios.post('/api/verify', { proof });
-      console.log(response.data.message); 
+      if (res.status === 200) {
+        console.log("User verified successfully!", res.data);
+      } else {
+        console.log("Verification failed.");
+      }
     } catch (error) {
       console.error("Sign up failed:", error);
     } finally {
@@ -25,16 +30,30 @@ const HomePage = () => {
   return (
     <div>
       <h1>Sign Up with World ID</h1>
-      <button onClick={handleSignUp} disabled={loading}>
-        {loading ? "Verifying..." : "Sign Up"}
-      </button>
+      <IDKitWidget
+        action={actionId} 
+        signal="user_identifier" 
+        onSuccess={handleProofSuccess}
+        app_id={appId}
+      >
+        {({ open }) => (
+          <button onClick={open} disabled={loading}>
+            {loading ? "Verifying..." : "Sign Up"}
+          </button>
+        )}
+      </IDKitWidget>
     </div>
   );
 };
 
 export default HomePage;
 
-async function getWorldIDProof(): Promise<string> {
-  // World ID SDK integration to get proof
-  return "mockWorldIDProof";
-}
+
+
+
+ 
+
+
+
+
+
