@@ -1,55 +1,35 @@
-import React, { useState } from 'react';
-import { ISuccessResult, IDKitWidget } from '@worldcoin/idkit';
-import axios from 'axios';
-import styles from '../styles/homepage.module.css';
+import React from 'react';
+import { useRouter } from 'next/router'; // Import the useRouter hook
+import styles from '../styles/LandingPage.module.css'; // Import the CSS module
 
-const HomePage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const appId = process.env.NEXT_PUBLIC_APP_ID || '';
-  const actionId = process.env.NEXT_PUBLIC_ACTION_ID || '';
+const LandingPage: React.FC = () => {
+  const router = useRouter();
 
-  const handleProofSuccess = async (proof: ISuccessResult) => {
-    setLoading(true);
-    try {
-      const res = await axios.post('/api/verify', {
-        proof: proof,
-      });
-
-      if (res.status === 200) {
-        console.log("User verified successfully!", res.data);
-      } else {
-        console.log("Verification failed.");
-      }
-    } catch (error) {
-      console.error("Sign up failed:", error);
-    } finally {
-      setLoading(false);
-    }
+  const handleVerifyClick = () => {
+    // Navigate to the index.tsx page (assuming it is at the root or adjust the path accordingly)
+    router.push('/signup');
   };
 
   return (
-    <div>
-      <h1>Sign Up with World ID</h1>
-      <IDKitWidget
-        action={actionId} 
-        signal="user_identifier" 
-        onSuccess={handleProofSuccess}
-        app_id={appId}
-      >
-        {({ open }) => (
-          <button onClick={open} disabled={loading}>
-            {loading ? "Verifying..." : "Sign Up"}
-          </button>
-        )}
-      </IDKitWidget>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>Send Money</h1>
+          <h1 className={styles.title}>Receive Money</h1>
+        </div>
+        <button className={styles.verifyButton} onClick={handleVerifyClick}>
+          Get Verified by World ID
+        </button>
+      </header>
+      <main className={styles.mainContent}>
+        <h2 className={styles.heading}>Get Verified by World ID</h2>
+        <p className={styles.subheading}>To get transaction priority and gas subsidies</p>
+      </main>
     </div>
   );
 };
 
-export default HomePage;
-
-
-
+export default LandingPage;
 
  
 
