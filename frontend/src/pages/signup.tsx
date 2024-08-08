@@ -19,6 +19,10 @@ const HomePage = () => {
 
       if (res.status === 200) {
         console.log("User verified successfully!", res.data);
+        window.alert(
+          `Successfully verified with World ID!
+          Your nullifier hash is: ` + proof.nullifier_hash
+        );
         router.push('/payments');
       } else {
         console.log("Verification failed.");
@@ -31,16 +35,20 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Sign Up with World ID</h1>
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Sign Up with World ID</h2>
       <IDKitWidget
         action={actionId} 
         signal="user_identifier" 
         onSuccess={handleProofSuccess}
         app_id={appId}
       >
-        {({ open }) => (
-          <button onClick={open} disabled={loading}>
+         {({ open }) => (
+          <button 
+            onClick={open} 
+            disabled={loading} 
+            className={styles.button}
+          >
             {loading ? "Verifying..." : "Sign Up"}
           </button>
         )}

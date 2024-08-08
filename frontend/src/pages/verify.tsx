@@ -8,7 +8,7 @@ const handleVerify = async (proof: ISuccessResult) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ proof }), //send proof to backend
+            body: JSON.stringify({ proof }), 
         });
 
         if (!res.ok) {
