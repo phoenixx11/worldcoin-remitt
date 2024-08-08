@@ -19,7 +19,6 @@ const HomePage = () => {
 
       if (res.status === 200) {
         console.log("User verified successfully!", res.data);
-        // Redirect to the next page (e.g., payments page) after successful verification
         router.push('/payments');
       } else {
         console.log("Verification failed.");

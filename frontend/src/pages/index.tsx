@@ -1,12 +1,11 @@
 import React from 'react';
-import { useRouter } from 'next/router'; // Import the useRouter hook
-import styles from '../styles/LandingPage.module.css'; // Import the CSS module
+import { useRouter } from 'next/router'; 
+import styles from '../styles/LandingPage.module.css'; 
 
 const LandingPage: React.FC = () => {
   const router = useRouter();
 
   const handleVerifyClick = () => {
-    // Navigate to the index.tsx page (assuming it is at the root or adjust the path accordingly)
     router.push('/signup');
   };
 
