@@ -7,14 +7,14 @@ interface RealTimeGasPriceContract {
 
 contract GasSubsidyContract {
     uint256 public constant SUBSIDY_PERCENTAGE = 10; // 10% subsidy
-    RealtimeGasPriceContract public realTimeGasPriceContract;
+    RealTimeGasPriceContract public GasPriceOracle;
 
     constructor(address _realTimeGasPriceContract) {
-        realTimeGasPriceContract = RealtimeGasPriceContract(_realTimeGasPriceContract);
+        GasPriceOracle = RealTimeGasPriceContract(_realTimeGasPriceContract);
     }
 
     function calculateGasSubsidy() public view returns (uint256) {
-        uint256 baseGasPrice = realTimeGasPriceContract.getGasPrice();
+        uint256 baseGasPrice = GasPriceOracle.getGasPrice();
         uint256 subsidyFactor = 100 - SUBSIDY_PERCENTAGE;
         uint256 subsidizedGasPrice = (baseGasPrice * subsidyFactor) / 100;
         return subsidizedGasPrice;
