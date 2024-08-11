@@ -1,0 +1,10 @@
+{
+    "local": {
+      "rpcUrl": "http://localhost:8545"
+    },
+    "testnet": {
+      "rpcUrl": "https://testnet.optimism.io"
+    }
+  }
+
+  

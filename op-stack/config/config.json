@@ -1,0 +1,9 @@
+{
+    "contractAddresses": {
+      "gasSubsidy": "0xYourGasSubsidyContractAddress",
+      "gasPriceOracle": "0xYourGasPriceOracleContractAddress"
+    },
+    "network": "optimism",
+    "rpcUrl": "https://your-l2-network-rpc-url"
+  }
+  

@@ -13,7 +13,7 @@ async fn main() -> web3::Result<()> {
     let contract_address: Address = "0xYourContractAddress".parse().unwrap();
 
     // ABI 
-    let contract_abi = include_bytes!("../path_to_your_contract_abi.json");
+    let contract_abi = include_bytes!(".../contracts/artifacts/contracts/gassubsidywithreth.sol/GasSubsidy.json");
     let contract = Contract::from_json(web3.eth(), contract_address, contract_abi)?;
 
     

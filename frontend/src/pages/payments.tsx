@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import Image from 'next/image';
+import { connectToMetaMask } from '../utils/metamask'; 
 
 const Payments: React.FC = () => {
   const [amount, setAmount] = useState<string>('');
@@ -11,7 +12,7 @@ const Payments: React.FC = () => {
     // Fetch the real-time gas price
     const fetchGasPrice = async () => {
       const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_L2_RPC_URL);
-      const gasPriceOracleAddress = 'YOUR_GAS_PRICE_ORACLE_CONTRACT_ADDRESS';  //
+      const gasPriceOracleAddress = 'YOUR_GAS_PRICE_ORACLE_CONTRACT_ADDRESS'; 
       const gasPriceOracleABI = [
         "function getLatestGasPrice() public view returns (int256)"
       ];
@@ -30,9 +31,22 @@ const Payments: React.FC = () => {
     fetchGasPrice();
   }, []);
 
-  const handleMakePayment = () => {
-    console.log("Payment button clicked!");
+  const handleMakePayment = async () => {
+    try {
+      const provider = await connectToMetaMask();
+
+      const signer = provider.getSigner();
+      const transaction = await signer.sendTransaction({
+        to: 'RECIPIENT_ADDRESS',
+        value: ethers.utils.parseEther(amount), 
+      });
+
+      console.log('Transaction hash:', transaction.hash);
+    } catch (error) {
+      console.error('Error making payment via MetaMask:', error);
+    }
   };
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
@@ -74,7 +88,7 @@ const Payments: React.FC = () => {
         <button 
           onClick={handleMakePayment} 
           style={{ width: '100%', padding: '10px', borderRadius: '5px', backgroundColor: '#0070f3', color: '#fff', cursor: 'pointer', border: 'none' }}>
-          Make Payment
+          Make Payment via Metamask
         </button>
       </div>
     </div>
